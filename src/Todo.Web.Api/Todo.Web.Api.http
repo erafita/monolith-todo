@@ -1,0 +1,28 @@
+@HOSTADDRESS = http://localhost:5266
+
+@NAME = admin
+@EMAIL = admin@domain.com
+@PASSWORD = Pa$sword1234!
+
+### 
+POST {{HOSTADDRESS}}/users/register
+Content-Type: application/json
+{
+  "email": "{{EMAIL}}", "firstName": "{{NAME}}", "password": "{{PASSWORD}}"
+}
+
+### 
+POST {{HOSTADDRESS}}/users/login
+Content-Type: application/json
+{
+  "email": "{{EMAIL}}", "password": "{{PASSWORD}}"
+}
+
+### 
+@ACCESS_JWT = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNmUyMjhkMy1jYjhhLTQ2OWItOGRiZC1iNjUzOThkODU4MDkiLCJlbWFpbCI6ImFkbWluQGRvbWFpbi5jb20iLCJhdWQiOiJkZXZlbG9wZXJzIiwiaXNzIjoibW9ub2xpdGgtdG9kby1pc3N1ZXIiLCJleHAiOjE3MjQyODI2NTEsImlhdCI6MTcyNDI3OTA1MSwibmJmIjoxNzI0Mjc5MDUxfQ._23-tcNOD4R9VEH3LfNX7hp27F3xmDPqm9CQczPQTyE
+@USER_ID = 16e228d3-cb8a-469b-8dbd-b65398d85809
+
+GET {{HOSTADDRESS}}/users/{{USER_ID}}
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_JWT}}
+

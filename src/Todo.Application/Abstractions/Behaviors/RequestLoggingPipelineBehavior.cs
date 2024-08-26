@@ -1,0 +1,34 @@
+﻿namespace Todo.Application.Abstractions.Behaviors;
+
+internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(
+    ILogger<RequestLoggingPipelineBehavior<TRequest, TResponse>> logger)
+    : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : class
+    where TResponse : Result
+{
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
+    {
+        string requestName = typeof(TRequest).Name;
+
+        logger.LogInformation("Processing request {RequestName}", requestName);
+
+        TResponse result = await next();
+
+        if (result.IsSuccess)
+        {
+            logger.LogInformation("Completed request {RequestName}", requestName);
+        }
+        else if (result.Error is { Type: ErrorType.Failure } or { Type: ErrorType.Problem } )
+        {
+            using (LogContext.PushProperty("Error", result.Error, true))
+            {
+                logger.LogError("Completed request {RequestName} with error", requestName);
+            }
+        }
+
+        return result;
+    }
+}

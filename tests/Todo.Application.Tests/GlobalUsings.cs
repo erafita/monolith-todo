@@ -1,0 +1,13 @@
+﻿global using BuildingBlocks;
+global using BuildingBlocks.ValueObjects;
+global using FluentAssertions;
+global using FluentValidation.TestHelper;
+global using NSubstitute;
+global using NSubstitute.ReturnsExtensions;
+global using Todo.Application.Abstractions.Authentication;
+global using Todo.Application.Abstractions.Data;
+global using Todo.Application.Users.Login;
+global using Todo.Application.Users.Register;
+global using Todo.Domain.Todos;
+global using Todo.Domain.Users;
+global using Todo.Shared.Tests.Builders;

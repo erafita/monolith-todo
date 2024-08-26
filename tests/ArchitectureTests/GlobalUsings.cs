@@ -1,0 +1,13 @@
+global using System.Reflection;
+global using ArchitectureTests.Extensions;
+global using BuildingBlocks;
+global using FluentAssertions;
+global using FluentValidation;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using NetArchTest.Rules;
+global using Todo.Application.Abstractions.Messaging;
+global using Todo.Domain.Users;
+global using Todo.Infrastructure.Persistence;
+global using Todo.Web.Api.Endpoints;
+global using Xunit;

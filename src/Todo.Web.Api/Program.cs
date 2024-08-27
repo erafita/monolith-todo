@@ -1,13 +1,20 @@
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+IConfigurationRoot configuration = new ConfigurationBuilder()
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .Build();
+
 builder.Host.UseSerilog((context, loggerConfig) =>
-    loggerConfig.ReadFrom.Configuration(context.Configuration));
+    loggerConfig.ReadFrom.Configuration(configuration));
 
 builder.Services
     .AddApplication()
     .AddPresentation()
     .AddSwaggerGenWithAuth()
-    .AddInfrastructure(builder.Configuration)
+    .AddInfrastructure(configuration)
     .AddEndpoints(Assembly.GetExecutingAssembly());
 
 WebApplication app = builder.Build();

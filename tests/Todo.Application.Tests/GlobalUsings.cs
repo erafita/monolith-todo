@@ -6,6 +6,8 @@ global using NSubstitute;
 global using NSubstitute.ReturnsExtensions;
 global using Todo.Application.Abstractions.Authentication;
 global using Todo.Application.Abstractions.Data;
+global using Todo.Application.Todos.Complete;
+global using Todo.Application.Todos.Create;
 global using Todo.Application.Users.Login;
 global using Todo.Application.Users.Register;
 global using Todo.Domain.Todos;

@@ -20,22 +20,22 @@ public static class DependencyInjection
 
     private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        string? connectionString = configuration.GetConnectionString("Database");
+        string? connectionString = configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
             options.UseNpgsql(
                 connectionString, npgsqlOptions =>
                     npgsqlOptions
-                        //.CommandTimeout(5)
-                        //.EnableRetryOnFailure(settings.MaxRetryCount, TimeSpan.FromSeconds(5), null);
+                        .CommandTimeout(5)
+                        .EnableRetryOnFailure(5, TimeSpan.FromSeconds(5), null)
                         .MigrationsHistoryTable(HistoryRepository.DefaultTableName, ApplicationDbContext.Schema)
                 );
 
             options.AddInterceptors(sp.GetRequiredService<AuditableEntitiesInterceptor>());
 
-            //options.EnableDetailedErrors(settings.EnableDetailedErrors)
-            //       .EnableSensitiveDataLogging(settings.EnableSensitiveDataLogging);
+            options.EnableDetailedErrors(true)
+                   .EnableSensitiveDataLogging(true);
         });
 
         services.AddSingleton<AuditableEntitiesInterceptor>();
@@ -51,7 +51,7 @@ public static class DependencyInjection
     {
         services
             .AddHealthChecks()
-            .AddNpgSql(configuration.GetConnectionString("Database")!);
+            .AddNpgSql(configuration.GetConnectionString("DefaultConnection")!);
 
         return services;
     }
@@ -61,11 +61,11 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(o =>
+            .AddJwtBearer(options =>
             {
-                o.MapInboundClaims = false;
-                o.RequireHttpsMetadata = false;
-                o.TokenValidationParameters = new TokenValidationParameters
+                options.MapInboundClaims = false;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ClockSkew = TimeSpan.Zero,
                     ValidIssuer = configuration["Jwt:Issuer"],

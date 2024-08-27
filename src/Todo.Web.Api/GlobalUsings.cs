@@ -10,6 +10,7 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using Microsoft.Extensions.Primitives;
 global using Microsoft.OpenApi.Models;
+global using Serilog;
 global using Serilog.Context;
 global using Todo.Application;
 global using Todo.Application.Abstractions.Authentication;

@@ -14,7 +14,7 @@ WebApplication app = builder.Build();
 
 app.MapEndpoints();
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     app.UseSwaggerWithUi();
 

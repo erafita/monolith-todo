@@ -7,7 +7,6 @@ public static class ApplicationBuilderExtensions
         app.UseMiddleware<RequestContextLoggingMiddleware>();
 
         app.UseExceptionHandler()
-           .UseHttpsRedirection()
            .UseAuthentication()
            .UseAuthorization();
 
